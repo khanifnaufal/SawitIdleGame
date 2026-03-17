@@ -9,114 +9,87 @@
 </head>
 
 <body>
-    <section>
-        <div class="main">
-            <div class="left">
-                <p>Sawit: <br/> <span class="sawit-cost sawit-text">10500</span></p>
-                <div class="sawit-img-container">
-                    <img src="./images/sawit.png" alt="" srcset="" class="sawit-image" onclick="incrementSawit(event)" draggable="false">
-                </div>
-                
-            </div>
-            <div class="right">
-                <div class="upgrade" onclick="buyUpgrade(`clicker`)">
-                    <div class="left-section">
-                        <img src="/images/clicker-white.png" alt="" srcset="" class="upgrade-img">
+    <section class="app-shell">
+        <div class="layout-root">
+            <main class="game-area">
+                <header class="game-header">
+                    <div>
+                        <h1>Sawit Idle Clicker</h1>
+                        <p class="subtitle">Bangun perkebunan, upgrade mandor, dan raih pencapaian</p>
                     </div>
-                    <div class="mid-section">
-                        <h4>Clicker</h4>
-                        <div class="cost-info">
-                            <p class="cost-text"> <span class="clicker-cost">10</span></p>
-                            <img src="images/sawit.png" alt="" srcset="" class="sawit-img">
-                        </div>
+                    <div class="score-box">
+                        <p>Total Sawit: <span id="total-sawit" class="sawit-text">0</span></p>
+                        <p><span class="info-tag" title="Sawit per click">SPC:</span> <span id="spc-text">1</span> • <span class="info-tag" title="Sawit per second">SPS:</span> <span id="sps-text">0</span></p>
                     </div>
-                    <div class="right-section">
-                        Level: <span class="clicker-level">0</span>
-                    </div>
-                    <div class="next-level-info">
-                        <p>
-                            <span class="clicker-increase">1</span> Sawit/s
-                        </p>
-                    </div>
-                </div>
+                </header>
 
-                <div class="upgrade" onclick="buyUpgrade(`egrek`)">
-                    <div class="left-section">
-                        <img src="/images/egrek.png" alt="" srcset="" class="upgrade-img">
-                    </div>
-                    <div class="mid-section">
-                        <h4>Egrek</h4>
-                        <div class="cost-info">
-                            <p class="cost-text"> <span class="egrek-cost">150</span></p>
-                            <img src="images/sawit.png" alt="" srcset="" class="sawit-img">
+                <div class="content-grid">
+                    <section class="left-column">
+                        <div class="sawit-card">
+                            <p class="label">Sawit Saat Ini</p>
+                            <p class="sawit-value"><span class="sawit-cost sawit-text">0</span></p>
+                            <div class="sawit-img-container"><img src="./images/sawit.png" class="sawit-image" onclick="incrementSawit(event)" draggable="false"></div>
+                            <p class="hint">Klik untuk mengambil sawit.</p>
                         </div>
-                    </div>
-                    <div class="right-section">
-                        Level: <span class="egrek-level">0</span>
-                    </div>
-                    <div class="next-level-info">
-                        <p>
-                            <span class="egrek-increase">4</span> Sawit/s
-                        </p>
-                    </div>
-                </div>
 
-                <div class="upgrade" onclick="buyUpgrade(`mandor`)">
-                    <div class="left-section">
-                        <img src="/images/mandor-sawit.png" alt="" srcset="" class="upgrade-img">
-                    </div>
-                    <div class="mid-section">
-                        <h4>Mandor</h4>
-                        <div class="cost-info">
-                            <p class="cost-text"> <span class="mandor-cost">550</span></p>
-                            <img src="images/sawit.png" alt="" srcset="" class="sawit-img">
-                        </div>
-                    </div>
-                    <div class="right-section">
-                        Level: <span class="mandor-level">0</span>
-                    </div>
-                    <div class="next-level-info">
-                        <p>
-                            <span class="mandor-increase">10</span> Sawit/s
-                        </p>
-                    </div>
-                </div>
+                        <button class="main-btn certificate-btn" onclick="buyCertificate()"><img src="./images/sertifikat-lahan.png" class="icon"> Beli Sertifikat Lahan</button>
+                        <p class="prestige-info" id="certificate-text">Sertifikat: 0  Harga: 500,000 Sawit · Bonus 12%</p>
+                        <div id="toast" class="toast hidden"></div>
 
-                <div class="upgrade" onclick="buyUpgrade(`pabrik`)">
-                    <div class="left-section">
-                        <img src="/images/pabrik-sawit.png" alt="" srcset="" class="upgrade-img">
-                    </div>
-                    <div class="mid-section">
-                        <h4>Pabrik</h4>
-                        <div class="cost-info">
-                            <p class="cost-text"> <span class="pabrik-cost">2500</span></p>
-                            <img src="images/sawit.png" alt="" srcset="" class="sawit-img">
+                        <div class="achievement-panel">
+                            <h3>Pencapaian</h3>
+                            <ul>
+                                <li id="achv-1">[ ] Kumpulkan 100 sawit</li>
+                                <li id="achv-2">[ ] Upgrade 10 kali</li>
+                                <li id="achv-3">[ ] Capai 100 SPS</li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="right-section">
-                        Level: <span class="pabrik-level">0</span>
-                    </div>
-                    <div class="next-level-info">
-                        <p>
-                            <span class="pabrik-increase">24</span> Sawit/s
-                        </p>
-                    </div>
+                    </section>
+
+                    <section class="upgrades-column">
+                        <h3>Upgrade</h3>
+                        <div class="upgrade-grid" id="upgrade-grid">
+                            <div class="upgrade" data-upgrade="clicker" onclick="buyUpgrade('clicker')">
+                                <div class="upgrade-icon"><img src="./images/clicker-white.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Clicker</div><div class="upgrade-sub">+1 SPC</div><div class="upgrade-meta">Lvl <span class="clicker-level">0</span> · Cost <span class="clicker-cost">10</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                            <div class="upgrade" data-upgrade="egrek" onclick="buyUpgrade('egrek')">
+                                <div class="upgrade-icon"><img src="./images/egrek.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Egrek</div><div class="upgrade-sub">+4 SPS</div><div class="upgrade-meta">Lvl <span class="egrek-level">0</span> · Cost <span class="egrek-cost">150</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                            <div class="upgrade" data-upgrade="mandor" onclick="buyUpgrade('mandor')">
+                                <div class="upgrade-icon"><img src="./images/mandor-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Mandor</div><div class="upgrade-sub">+10 SPS</div><div class="upgrade-meta">Lvl <span class="mandor-level">0</span> · Cost <span class="mandor-cost">550</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                            <div class="upgrade" data-upgrade="traktor" onclick="buyUpgrade('traktor')">
+                                <div class="upgrade-icon"><img src="./images/truk-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Truck</div><div class="upgrade-sub">+30 SPS</div><div class="upgrade-meta">Lvl <span class="traktor-level">0</span> · Cost <span class="traktor-cost">8500</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                            <div class="upgrade" data-upgrade="gudang" onclick="buyUpgrade('gudang')">
+                                <div class="upgrade-icon"><img src="./images/gudang-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Gudang</div><div class="upgrade-sub">+55 SPS</div><div class="upgrade-meta">Lvl <span class="gudang-level">0</span> · Cost <span class="gudang-cost">22500</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                            <div class="upgrade" data-upgrade="pabrik" onclick="buyUpgrade('pabrik')">
+                                <div class="upgrade-icon"><img src="./images/pabrik-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content"><div class="upgrade-title">Pabrik</div><div class="upgrade-sub">+120 SPS</div><div class="upgrade-meta">Lvl <span class="pabrik-level">0</span> · Cost <span class="pabrik-cost">2500</span></div></div>
+                                <button class="buy-btn">BUY</button>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </div>
-        </div>
-        <div class="statistics">
-            <div class="texts">
-                <p>SPC: <span id="spc-text" class="sawit-text">1</span></p>
-                <p>SPS: <span id="sps-text" class="sawit-text">0</span></p>
-            </div>
-        </div>
-        <div class="util-buttons">
-            <button class="util-button" onclick="save()">
-                Save
-            </button>
-            <button class="util-button" onclick="load()">
-                Load
-            </button>
+            </main>
+
+            <aside class="stats-panel">
+                <div class="stats-header"><h3>Statistics</h3></div>
+                <div class="stats-block"><p><strong>Balances</strong></p><p>Total Sawit: <span id="panel-total">0</span></p><p>SPC: <span id="panel-spc">1</span></p><p>SPS: <span id="panel-sps">0</span></p></div>
+                <div class="stats-block"><p><strong>Prestige</strong></p><p>Multiplier: <span id="panel-prestige">1.00x</span></p><p>Certificates: <span id="panel-cert">0</span></p></div>
+                <div class="stats-block"><p><strong>Pencapaian</strong></p><ul><li id="achv-1">[ ] Kumpulkan 100 sawit</li><li id="achv-2">[ ] Upgrade 10 kali</li><li id="achv-3">[ ] Capai 100 SPS</li></ul></div>
+            </aside>
         </div>
     </section>
 
