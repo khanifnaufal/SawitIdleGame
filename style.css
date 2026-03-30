@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-* { box-sizing: border-box; }
+
+/* ── Reset & Base ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -9,112 +12,376 @@ body {
     user-select: none;
     padding: 8px;
 }
+
+/* ── App shell ──────────────────────────────────────────────────────────── */
 .app-shell {
-    width: min(1200px, 98vw);
+    width: min(1260px, 98vw);
     margin: 0 auto;
     border: 2px solid #d4ba5d;
     border-radius: 10px;
     padding: 8px;
-    background: rgba(8, 15, 6, 0.9);
-}
-.layout-root { display: grid; grid-template-columns: 1.45fr 1fr; gap: 10px; }
-.game-area { border: 1px solid #5f5f3f; border-radius: 10px; padding: 8px; background: rgba(0,0,0,0.35); }
-.game-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.game-header h1 { margin: 0; font-size: 18px; }
-.subtitle { margin: 4px 0 0; font-size: 11px; color: #c8ddab; }
-.score-box { text-align: right; font-size: 11px; color: #f3f6dc; }
-.content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.left-column, .upgrades-column { border: 1px solid #4c5a2e; border-radius: 8px; background: rgba(0,0,0,0.25); padding: 8px; }
-.sawit-card { border: 1px solid #5b8a2c; border-radius: 8px; padding: 8px; background: linear-gradient(to bottom, #233d0d, #0f1a05); text-align: center; }
-.sawit-value { margin: 8px 0; font-size: 26px; color: #9ef55f; font-weight: 700; }
-.sawit-img-container { width: 160px; margin: 0 auto; height: 160px; }
-.sawit-image { width: 100%; cursor: pointer; }
-.main-btn { border: 0; border-radius: 7px; padding: 8px 10px; background: #2c8f2f; color: #fff; font-weight: bold; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
-.main-btn:hover { background: #4bbd4f; }
-.prestige-info { margin-top: 6px; color: #d9f8b0; font-size: 11px; }
-.upgrade-grid { display: grid; gap: 6px; }
-.upgrade { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 6px; padding: 6px; border: 1px solid #566336; background: rgba(0,0,0,0.35); border-radius: 7px; }
-.upgrade:hover { border-color: #95be56; }
-.upgrade-icon { width: 40px; height: 40px; border-radius: 6px; background: #2f3e19; display: flex; align-items: center; justify-content: center; }
-.upgrade-img { width: 24px; height: 24px; }
-.upgrade-content { font-size: 11px; }
-.upgrade-title { font-weight: bold; font-size: 12px; color: #fffdc9; }
-.upgrade-sub { color: #a8e0a1; margin: 2px 0; font-size: 10px; }
-.upgrade-meta { color: #d2dbb9; font-size: 10px; }
-.buy-btn { border: none; border-radius: 6px; background: #2d7a2f; color: #fff; padding: 6px 8px; font-size: 10px; cursor: pointer; }
-.stats-panel { border: 1px solid #6f6b3f; border-radius: 10px; background: rgba(0,0,0,0.4); padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-.stats-header h3 { margin: 0; font-size: 14px; color: #f7dc7c; text-align: center; }
-.stats-block { border: 1px solid #4b4f2a; border-radius: 6px; background: rgba(0,0,0,0.28); padding: 6px; }
-.stats-block p, .stats-block li { margin: 3px 0; font-size: 11px; }
-.stats-block ul { margin: 4px 0 0 16px; padding: 0; }
-.toast { margin-top: 8px; border: 1px solid #8ec870; background: rgba(12, 73, 11, 0.9); color: #edffdf; border-radius: 6px; padding: 6px; font-size: 11px; }
-.hidden { display: none; }
-.info-tag { text-decoration: underline dotted; cursor: help; }
-@media (max-width: 980px) { .layout-root { grid-template-columns: 1fr; } .content-grid { grid-template-columns: 1fr; } }
-
-.sawit-card .label { margin: 0; font-size: 10px; color: #d6e1c2; }
-.sawit-value { margin: 8px 0 6px; font-size: 28px; font-weight: 700; color: #9ef55f; text-shadow: 1px 1px 3px #0f0f0f; }
-.sawit-img-container { width: min(180px, 80vw); margin: 0 auto; position: relative; height: 180px; }
-.sawit-image { width: 100%; max-width: 180px; transition: transform .12s ease, filter .12s; }
-.sawit-image:hover { cursor: pointer; transform: scale(1.03); filter: brightness(1.1); }
-
-@media (max-width: 720px) {
-    .top-bar { flex-direction: column; }
-    .main { grid-template-columns: 1fr; }
-    .game-panel { display: block; }
-    .stats-panel { margin-top: 10px; }
-    .upgrade-grid { margin-top: 6px; }
-    .upgrade { grid-template-columns: 55px 1fr auto; }
-    .sawit-img-container { height: 160px; }
+    background: rgba(8, 15, 6, 0.92);
 }
 
-.hint { font-size: 11px; margin: 8px 0 0; color: #c7d5bd; }
-.action-row { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-.main-btn { border: none; background: #2f7b1c; color: #fff; font-size: 10px; border-radius: 7px; padding: 8px 10px; cursor: pointer; font-family: inherit; font-weight: bold; }
-.main-btn:hover { background: #4ea72f; }
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.layout-root {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 10px;
+}
 
-.main { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; align-items: start; }
-.game-panel { display: grid; grid-template-columns: 1fr; }
-.stats-panel { border: 1px solid #7b7b7b; border-radius: 10px; padding: 10px; background: rgba(0,0,0,0.35); margin-top: 12px; width: 100%; }
-.stats-panel h3 { margin-top: 0; font-size: 12px; }
-.stats-panel p { margin: 4px 0; font-size: 12px; }
-.certificate-btn { display: flex; align-items: center; gap: 6px; }
-.certificate-btn .icon { width: 16px; height: 16px; }
-.prestige-info { margin-top: 8px; color: #c0f6a0; font-size: 11px; }
+.game-area {
+    border: 1px solid #5f5f3f;
+    border-radius: 10px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.35);
+}
 
-.upgrade-grid { display: grid; gap: 8px; }
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.game-header h1 {
+    margin: 0;
+    font-size: 15px;
+    color: #f7e87c;
+    text-shadow: 0 0 10px #f7e87c55;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    font-size: 9px;
+    color: #c8ddab;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.score-box {
+    text-align: right;
+    font-size: 10px;
+    color: #f3f6dc;
+    line-height: 1.7;
+}
+
+.mute-btn {
+    background: none;
+    border: 1px solid #6a6a3f;
+    border-radius: 6px;
+    color: #f2f2f2;
+    font-size: 14px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.mute-btn:hover { background: rgba(255,255,255,0.08); }
+
+/* ── Content grid ────────────────────────────────────────────────────────── */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.left-column,
+.upgrades-column {
+    border: 1px solid #4c5a2e;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 8px;
+}
+
+/* ── Sawit card ──────────────────────────────────────────────────────────── */
+.sawit-card {
+    border: 1px solid #5b8a2c;
+    border-radius: 8px;
+    padding: 10px 8px;
+    background: linear-gradient(to bottom, #233d0d, #0f1a05);
+    text-align: center;
+}
+
+.label { margin: 0; font-size: 9px; color: #d6e1c2; }
+
+.sawit-value {
+    margin: 8px 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #9ef55f;
+    text-shadow: 1px 1px 3px #0f0f0f, 0 0 12px #9ef55f44;
+}
+
+.sawit-img-container {
+    width: min(175px, 80vw);
+    margin: 0 auto;
+    position: relative;
+    height: 175px;
+}
+
+.sawit-image {
+    width: 100%;
+    max-width: 175px;
+    cursor: pointer;
+    transition: transform .12s ease, filter .12s;
+    image-rendering: crisp-edges;
+}
+.sawit-image:hover  { transform: scale(1.04); filter: brightness(1.12) drop-shadow(0 0 8px #9ef55f66); }
+.sawit-image.clicked { transform: scale(0.91); filter: brightness(1.3) saturate(1.3); }
+
+.hint { font-size: 9px; margin: 8px 0 0; color: #c7d5bd; }
+
+/* ── Certificate ─────────────────────────────────────────────────────────── */
+.certificate-section { margin-top: 10px; }
+
+.main-btn {
+    border: none;
+    background: linear-gradient(135deg, #2f7b1c, #4ea72f);
+    color: #fff;
+    font-size: 9px;
+    font-family: inherit;
+    border-radius: 7px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    transition: background .15s, transform .1s;
+}
+.main-btn:hover { background: linear-gradient(135deg, #3d9c22, #60cc3c); transform: translateY(-1px); }
+.main-btn:active { transform: scale(0.97); }
+
+.certificate-btn .icon { width: 16px; height: 16px; object-fit: contain; border-radius: 2px; }
+
+.prestige-info { margin-top: 6px; color: #c0f6a0; font-size: 9px; line-height: 1.6; }
+
+/* ── Achievements ─────────────────────────────────────────────────────────── */
+.achievement-panel {
+    margin-top: 14px;
+    border-top: 1px solid #4e5e30;
+    padding-top: 10px;
+}
+.achievement-panel h3 { margin: 0 0 6px; font-size: 11px; color: #f7dc7c; }
+.achievement-panel ul {
+    margin: 0;
+    padding: 0 0 0 4px;
+    list-style: none;
+    font-size: 8px;
+    line-height: 1.8;
+}
+.achievement-panel li { color: #b0bfa0; transition: color .2s; }
+.achievement-panel li.unlocked { color: #9ef55f; }
+
+/* ── Toast ───────────────────────────────────────────────────────────────── */
+.toast {
+    margin-top: 8px;
+    background: rgba(12, 73, 11, 0.92);
+    border: 1px solid #9cf38f;
+    color: #ecffdf;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 9px;
+    line-height: 1.5;
+    animation: slide-in .2s ease;
+}
+.hidden { display: none !important; }
+
+/* ── Upgrades column ─────────────────────────────────────────────────────── */
+.upgrades-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.upgrades-header h3 { margin: 0; font-size: 11px; color: #f7dc7c; }
+
+/* Buy multiplier toggle */
+.buy-multiplier-group {
+    display: flex;
+    gap: 4px;
+}
+.multiplier-btn {
+    border: 1px solid #566336;
+    background: rgba(0,0,0,0.4);
+    color: #cde0a0;
+    font-family: inherit;
+    font-size: 8px;
+    border-radius: 5px;
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.multiplier-btn:hover { border-color: #91c11f; background: rgba(80,100,30,0.35); }
+.multiplier-btn.active {
+    background: linear-gradient(135deg, #3a6a10, #5daa22);
+    border-color: #91c11f;
+    color: #fff;
+}
+
+/* ── Upgrade cards ───────────────────────────────────────────────────────── */
+.upgrade-grid { display: grid; gap: 7px; }
+
 .upgrade {
     display: grid;
-    grid-template-columns: 56px 1fr 70px;
+    grid-template-columns: 52px 1fr 72px;
     gap: 8px;
     align-items: center;
     border-radius: 10px;
-    border: 1px solid rgba(220,220,220,0.15);
+    border: 1px solid rgba(220, 220, 220, 0.12);
     background: rgba(0, 0, 0, 0.35);
     padding: 8px 10px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: border-color .2s ease, background .2s ease;
+    transition: border-color .2s, background .2s, box-shadow .2s;
 }
 .upgrade:hover { border-color: #91c11f; background: rgba(64, 64, 64, 0.35); }
-.upgrade.locked { opacity: 0.65; filter: grayscale(0.35); }
-.upgrade-icon { width: 52px; height: 52px; border-radius: 10px; background: #2d2d2d; display: flex; justify-content: center; align-items: center; }
-.upgrade-icon .upgrade-img { width: 42px; height: 42px; }
-.upgrade-content { display: flex; flex-direction: column; }
-.upgrade-title { font-size: 12px; margin: 0; color: #fff; font-weight: bold; }
-.upgrade-sub { font-size: 10px; margin: 2px 0 0; color: #e8e8e8; }
-.upgrade-meta { margin-top: 2px; font-size: 9px; color: #c9d0bc; }
-.buy-btn { border: none; align-self: stretch; background: #1aa84f; color: white; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; padding: 10px 8px; cursor: pointer; }
-.buy-btn:hover { background: #34d270; }
-.upgrade .buy-btn { justify-self: end; }
-.achievement-panel { margin-top: 14px; border-top: 2px solid #6e6e6e; padding-top: 10px; }
-.achievement-panel h3 { margin: 0; font-size: 12px; }
-.achievement-panel ul { margin: 6px 0 0 10px; padding: 0; list-style: none; font-size: 10px; }
-.achievement-panel li { margin-bottom: 4px; }
-.toast { margin-top: 8px; background: rgba(12, 73, 11, 0.9); border: 1px solid #9cf38f; color: #ecffdf; padding: 8px; border-radius: 6px; font-size: 10px; }
-.hidden { display: none; }
+.upgrade.locked { opacity: 0.62; filter: grayscale(0.3); }
+.upgrade.affordable {
+    border-color: rgba(145, 193, 31, 0.5);
+    box-shadow: 0 0 10px rgba(145, 193, 31, 0.18);
+}
+
+.upgrade-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: #2d2d2d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.upgrade-img { width: 38px; height: 38px; object-fit: contain; }
+
+.upgrade-content { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.upgrade-title { font-size: 11px; color: #fff; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.upgrade-sub   { font-size: 9px;  color: #a8e0a1; }
+.upgrade-meta  { font-size: 8px;  color: #c9d0bc; }
+.upgrade-eta   { font-size: 7px;  color: #88a070; min-height: 10px; }
+
+/* Progress bar */
+.upgrade-progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 3px;
+}
+.upgrade-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #4ea72f, #9ef55f);
+    border-radius: 3px;
+    transition: width .4s ease;
+}
+
+.buy-btn {
+    border: none;
+    align-self: stretch;
+    background: linear-gradient(135deg, #1aa84f, #2ed470);
+    color: white;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px 6px;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    white-space: nowrap;
+}
+.buy-btn:hover  { background: linear-gradient(135deg, #22cc60, #40ef88); transform: translateY(-1px); }
+.buy-btn:active { transform: scale(0.96); }
+
+/* ── Stats panel ─────────────────────────────────────────────────────────── */
+.stats-panel {
+    border: 1px solid #6f6b3f;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: start;
+    position: sticky;
+    top: 8px;
+}
+.stats-header h3 { margin: 0 0 4px; font-size: 12px; color: #f7dc7c; text-align: center; }
+
+.stats-block {
+    border: 1px solid #4b4f2a;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.28);
+    padding: 7px;
+    font-size: 9px;
+    line-height: 1.7;
+}
+.stats-block p  { margin: 0; }
+.stats-block ul { margin: 4px 0 0 4px; padding: 0; list-style: none; font-size: 7.5px; line-height: 2; }
+.stats-block li { color: #b0bfa0; }
+.stats-block li.unlocked { color: #9ef55f; }
+
+/* ── Offline modal ───────────────────────────────────────────────────────── */
+.offline-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.offline-modal.hidden { display: none !important; }
+
+.offline-modal-box {
+    background: linear-gradient(160deg, #1b3a0a, #0c1505);
+    border: 2px solid #d4ba5d;
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+    max-width: 400px;
+    width: 90vw;
+    animation: pop-in .25s ease;
+}
+.offline-modal-box h2 { font-size: 14px; color: #f7dc7c; margin: 0 0 14px; }
+.offline-modal-box p  { font-size: 10px; color: #d6e1c2; line-height: 1.8; margin-bottom: 20px; }
+
+/* ── Utility ─────────────────────────────────────────────────────────────── */
 .sawit-text { color: #9ef55f; }
-.info-tag { text-decoration: underline dotted; cursor: help; }
-.fade-up { animation: fade-up 0.8s forwards; }
-@keyframes fade-up { from {opacity:1; transform: translateY(0);} to {opacity:0; transform: translateY(-35px);} }
+.info-tag   { text-decoration: underline dotted; cursor: help; }
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+.fade-up { animation: fade-up 0.8s forwards; pointer-events: none; }
+@keyframes fade-up {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-38px); }
+}
+@keyframes slide-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+    .layout-root { grid-template-columns: 1fr; }
+    .stats-panel  { position: static; }
+}
+@media (max-width: 720px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .upgrades-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .sawit-img-container { height: 155px; }
+    .upgrade { grid-template-columns: 44px 1fr 65px; }
+}

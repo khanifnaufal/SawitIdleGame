@@ -1,25 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sawit Idle Clicker</title>
+    <meta name="description" content="Bangun perkebunan sawit, upgrade mandor, dan raih pencapaian dalam game idle clicker berbasis web.">
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <!-- Offline earnings modal -->
+    <div id="offline-modal" class="offline-modal hidden">
+        <div class="offline-modal-box">
+            <h2>Selamat Datang Kembali!</h2>
+            <p id="offline-msg">Kamu absen beberapa saat...</p>
+            <button class="main-btn" onclick="closeOfflineModal()">Ambil Hasil!</button>
+        </div>
+    </div>
+
     <section class="app-shell">
         <div class="layout-root">
             <main class="game-area">
                 <header class="game-header">
                     <div>
-                        <h1>Sawit Idle Clicker</h1>
+                        <h1>🌴 Sawit Idle Clicker</h1>
                         <p class="subtitle">Bangun perkebunan, upgrade mandor, dan raih pencapaian</p>
                     </div>
-                    <div class="score-box">
-                        <p>Total Sawit: <span id="total-sawit" class="sawit-text">0</span></p>
-                        <p><span class="info-tag" title="Sawit per click">SPC:</span> <span id="spc-text">1</span> • <span class="info-tag" title="Sawit per second">SPS:</span> <span id="sps-text">0</span></p>
+                    <div class="header-right">
+                        <div class="score-box">
+                            <p>Total Sawit: <span id="total-sawit" class="sawit-text">0</span></p>
+                            <p><span class="info-tag" title="Sawit per klik">SPC:</span> <span id="spc-text">1</span> &bull; <span class="info-tag" title="Sawit per detik">SPS:</span> <span id="sps-text">0</span></p>
+                        </div>
+                        <button id="mute-btn" class="mute-btn" onclick="toggleMute()" title="Bisukan/Aktifkan suara">🔊</button>
                     </div>
                 </header>
 
@@ -28,56 +41,113 @@
                         <div class="sawit-card">
                             <p class="label">Sawit Saat Ini</p>
                             <p class="sawit-value"><span class="sawit-cost sawit-text">0</span></p>
-                            <div class="sawit-img-container"><img src="./images/sawit.png" class="sawit-image" onclick="incrementSawit(event)" draggable="false"></div>
+                            <div class="sawit-img-container">
+                                <img src="./assets/images/sawit.png" class="sawit-image" id="sawit-img" onclick="incrementSawit(event)" draggable="false">
+                            </div>
                             <p class="hint">Klik untuk mengambil sawit.</p>
                         </div>
 
-                        <button class="main-btn certificate-btn" onclick="buyCertificate()"><img src="./images/sertifikat-lahan.png" class="icon"> Beli Sertifikat Lahan</button>
-                        <p class="prestige-info" id="certificate-text">Sertifikat: 0  Harga: 500,000 Sawit · Bonus 12%</p>
+                        <div class="certificate-section">
+                            <button class="main-btn certificate-btn" onclick="buyCertificate()">
+                                <img src="./assets/images/Sertifikat-lahan.png" class="icon"> Beli Sertifikat Lahan
+                            </button>
+                            <p class="prestige-info" id="certificate-text">Sertifikat: 0 &nbsp;Harga: 500.000 Sawit &middot; Bonus +12%</p>
+                        </div>
+
                         <div id="toast" class="toast hidden"></div>
 
                         <div class="achievement-panel">
-                            <h3>Pencapaian</h3>
-                            <ul>
-                                <li id="achv-1">[ ] Kumpulkan 100 sawit</li>
-                                <li id="achv-2">[ ] Upgrade 10 kali</li>
-                                <li id="achv-3">[ ] Capai 100 SPS</li>
+                            <h3>🏆 Pencapaian</h3>
+                            <ul id="achievement-list">
+                                <li id="achv-main-1">[ ] Kumpulkan 100 sawit</li>
+                                <li id="achv-main-2">[ ] Upgrade 10 kali</li>
+                                <li id="achv-main-3">[ ] Capai 100 SPS</li>
+                                <li id="achv-main-4">[ ] Kumpulkan 10.000 sawit</li>
+                                <li id="achv-main-5">[ ] Capai 500 SPS</li>
+                                <li id="achv-main-6">[ ] Upgrade 50 kali</li>
+                                <li id="achv-main-7">[ ] Beli 5 Sertifikat</li>
+                                <li id="achv-main-8">[ ] Kumpulkan 1.000.000 sawit</li>
+                                <li id="achv-main-9">[ ] Capai 1.000 SPS</li>
+                                <li id="achv-main-10">[ ] Upgrade semua item ke Lvl 10</li>
                             </ul>
                         </div>
                     </section>
 
                     <section class="upgrades-column">
-                        <h3>Upgrade</h3>
+                        <div class="upgrades-header">
+                            <h3>⚙️ Upgrade</h3>
+                            <div class="buy-multiplier-group" id="buy-multiplier-group">
+                                <button class="multiplier-btn active" id="btn-x1" onclick="setBuyMultiplier(1)">×1</button>
+                                <button class="multiplier-btn" id="btn-x10" onclick="setBuyMultiplier(10)">×10</button>
+                                <button class="multiplier-btn" id="btn-max" onclick="setBuyMultiplier('max')">Maks</button>
+                            </div>
+                        </div>
                         <div class="upgrade-grid" id="upgrade-grid">
                             <div class="upgrade" data-upgrade="clicker" onclick="buyUpgrade('clicker')">
-                                <div class="upgrade-icon"><img src="./images/clicker-white.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Clicker</div><div class="upgrade-sub">+1 SPC</div><div class="upgrade-meta">Lvl <span class="clicker-level">0</span> · Cost <span class="clicker-cost">10</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/clicker-white.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Klik Tangan</div>
+                                    <div class="upgrade-sub">+1 SPC</div>
+                                    <div class="upgrade-meta">Lvl <span class="clicker-level">0</span> &middot; Harga <span class="clicker-cost">10</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill clicker-progress"></div></div>
+                                    <div class="upgrade-eta clicker-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-clicker">BELI</button>
                             </div>
                             <div class="upgrade" data-upgrade="egrek" onclick="buyUpgrade('egrek')">
-                                <div class="upgrade-icon"><img src="./images/egrek.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Egrek</div><div class="upgrade-sub">+4 SPS</div><div class="upgrade-meta">Lvl <span class="egrek-level">0</span> · Cost <span class="egrek-cost">150</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/egrek.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Egrek</div>
+                                    <div class="upgrade-sub">+4 SPS</div>
+                                    <div class="upgrade-meta">Lvl <span class="egrek-level">0</span> &middot; Harga <span class="egrek-cost">150</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill egrek-progress"></div></div>
+                                    <div class="upgrade-eta egrek-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-egrek">BELI</button>
                             </div>
                             <div class="upgrade" data-upgrade="mandor" onclick="buyUpgrade('mandor')">
-                                <div class="upgrade-icon"><img src="./images/mandor-sawit.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Mandor</div><div class="upgrade-sub">+10 SPS</div><div class="upgrade-meta">Lvl <span class="mandor-level">0</span> · Cost <span class="mandor-cost">550</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/mandor-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Mandor</div>
+                                    <div class="upgrade-sub">+10 SPS</div>
+                                    <div class="upgrade-meta">Lvl <span class="mandor-level">0</span> &middot; Harga <span class="mandor-cost">550</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill mandor-progress"></div></div>
+                                    <div class="upgrade-eta mandor-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-mandor">BELI</button>
                             </div>
                             <div class="upgrade" data-upgrade="traktor" onclick="buyUpgrade('traktor')">
-                                <div class="upgrade-icon"><img src="./images/truk-sawit.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Truck</div><div class="upgrade-sub">+30 SPS</div><div class="upgrade-meta">Lvl <span class="traktor-level">0</span> · Cost <span class="traktor-cost">8500</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/truk-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Truk</div>
+                                    <div class="upgrade-sub">+30 SPS</div>
+                                    <div class="upgrade-meta">Lvl <span class="traktor-level">0</span> &middot; Harga <span class="traktor-cost">2.500</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill traktor-progress"></div></div>
+                                    <div class="upgrade-eta traktor-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-traktor">BELI</button>
                             </div>
                             <div class="upgrade" data-upgrade="gudang" onclick="buyUpgrade('gudang')">
-                                <div class="upgrade-icon"><img src="./images/gudang-sawit.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Gudang</div><div class="upgrade-sub">+55 SPS</div><div class="upgrade-meta">Lvl <span class="gudang-level">0</span> · Cost <span class="gudang-cost">22500</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/gudang-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Gudang</div>
+                                    <div class="upgrade-sub">+55 SPS</div>
+                                    <div class="upgrade-meta">Lvl <span class="gudang-level">0</span> &middot; Harga <span class="gudang-cost">5.000</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill gudang-progress"></div></div>
+                                    <div class="upgrade-eta gudang-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-gudang">BELI</button>
                             </div>
                             <div class="upgrade" data-upgrade="pabrik" onclick="buyUpgrade('pabrik')">
-                                <div class="upgrade-icon"><img src="./images/pabrik-sawit.png" class="upgrade-img"></div>
-                                <div class="upgrade-content"><div class="upgrade-title">Pabrik</div><div class="upgrade-sub">+120 SPS</div><div class="upgrade-meta">Lvl <span class="pabrik-level">0</span> · Cost <span class="pabrik-cost">2500</span></div></div>
-                                <button class="buy-btn">BUY</button>
+                                <div class="upgrade-icon"><img src="./assets/images/pabrik-sawit.png" class="upgrade-img"></div>
+                                <div class="upgrade-content">
+                                    <div class="upgrade-title">Pabrik</div>
+                                    <div class="upgrade-sub">+120 SPS</div>
+                                    <div class="upgrade-meta">Lvl <span class="pabrik-level">0</span> &middot; Harga <span class="pabrik-cost">10.500</span></div>
+                                    <div class="upgrade-progress-bar"><div class="upgrade-progress-fill pabrik-progress"></div></div>
+                                    <div class="upgrade-eta pabrik-eta"></div>
+                                </div>
+                                <button class="buy-btn" id="buy-btn-pabrik">BELI</button>
                             </div>
                         </div>
                     </section>
@@ -85,10 +155,39 @@
             </main>
 
             <aside class="stats-panel">
-                <div class="stats-header"><h3>Statistics</h3></div>
-                <div class="stats-block"><p><strong>Balances</strong></p><p>Total Sawit: <span id="panel-total">0</span></p><p>SPC: <span id="panel-spc">1</span></p><p>SPS: <span id="panel-sps">0</span></p></div>
-                <div class="stats-block"><p><strong>Prestige</strong></p><p>Multiplier: <span id="panel-prestige">1.00x</span></p><p>Certificates: <span id="panel-cert">0</span></p></div>
-                <div class="stats-block"><p><strong>Pencapaian</strong></p><ul><li id="achv-1">[ ] Kumpulkan 100 sawit</li><li id="achv-2">[ ] Upgrade 10 kali</li><li id="achv-3">[ ] Capai 100 SPS</li></ul></div>
+                <div class="stats-header"><h3>📊 Statistik</h3></div>
+                <div class="stats-block">
+                    <p><strong>Saldo</strong></p>
+                    <p>Total Sawit: <span id="panel-total">0</span></p>
+                    <p>SPC: <span id="panel-spc">1</span></p>
+                    <p>SPS: <span id="panel-sps">0</span></p>
+                </div>
+                <div class="stats-block">
+                    <p><strong>Prestise</strong></p>
+                    <p>Pengganda: <span id="panel-prestige">1.00×</span></p>
+                    <p>Sertifikat: <span id="panel-cert">0</span></p>
+                </div>
+                <div class="stats-block">
+                    <p><strong>Aktivitas</strong></p>
+                    <p>Total Klik: <span id="panel-clicks">0</span></p>
+                    <p>Total Upgrade: <span id="panel-upgrades">0</span></p>
+                    <p>Waktu Main: <span id="panel-playtime">0 mnt</span></p>
+                </div>
+                <div class="stats-block">
+                    <p><strong>🏆 Pencapaian</strong></p>
+                    <ul id="stats-achievement-list">
+                        <li id="achv-stat-1">[ ] Kumpulkan 100 sawit</li>
+                        <li id="achv-stat-2">[ ] Upgrade 10 kali</li>
+                        <li id="achv-stat-3">[ ] Capai 100 SPS</li>
+                        <li id="achv-stat-4">[ ] Kumpulkan 10.000 sawit</li>
+                        <li id="achv-stat-5">[ ] Capai 500 SPS</li>
+                        <li id="achv-stat-6">[ ] Upgrade 50 kali</li>
+                        <li id="achv-stat-7">[ ] Beli 5 Sertifikat</li>
+                        <li id="achv-stat-8">[ ] Kumpulkan 1.000.000 sawit</li>
+                        <li id="achv-stat-9">[ ] Capai 1.000 SPS</li>
+                        <li id="achv-stat-10">[ ] Upgrade semua item ke Lvl 10</li>
+                    </ul>
+                </div>
             </aside>
         </div>
     </section>
